@@ -12,7 +12,7 @@ URL:		http://fbpanel.sourceforge.net/
 License:	GPL
 Group:		Graphical desktop/Other
 BuildRoot:	%{_tmppath}/%{name}-buildroot
-BuildRequires:	gtk2-devel
+BuildRequires:	gtk2-devel xpm-devel
 
 %description
 fbpanel is a lightweight, NETWM compliant desktop panel. It works with any
