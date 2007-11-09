@@ -1,5 +1,5 @@
 %define name	fbpanel
-%define version	4.9
+%define version	4.12
 %define release %mkrel 1
 
 Name: 	 	%{name}
@@ -33,7 +33,7 @@ It provides:
 %build
 ./configure --prefix=%_prefix
 %make CFLAGS="$RPM_OPT_FLAGS"
-										
+
 %install
 rm -rf $RPM_BUILD_ROOT
 make install PREFIX=%buildroot/%_prefix
