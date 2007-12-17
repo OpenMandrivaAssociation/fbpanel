@@ -11,7 +11,6 @@ Source:		%{name}-%{version}.tar.bz2
 URL:		http://fbpanel.sourceforge.net/
 License:	GPL
 Group:		Graphical desktop/Other
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 BuildRequires:	gtk2-devel xpm-devel libxmu-devel
 
 %description
