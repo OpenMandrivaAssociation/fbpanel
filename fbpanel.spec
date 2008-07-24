@@ -1,6 +1,6 @@
 %define name	fbpanel
 %define version	4.12
-%define release %mkrel 1
+%define release %mkrel 3
 
 Name: 	 	%{name}
 Summary: 	Lightweight desktop panel
