@@ -1,18 +1,18 @@
 %define name	fbpanel
-%define version	4.12
-%define release %mkrel 4
+%define version	6.0
+%define release %mkrel 1
 
 Name: 	 	%{name}
 Summary: 	Lightweight desktop panel
 Version: 	%{version}
 Release: 	%{release}
 
-Source:		%{name}-%{version}.tar.bz2
+Source:		http://downloads.sourceforge.net/project/fbpanel/fbpanel/%{version}/%{name}-%{version}.tbz2
 URL:		http://fbpanel.sourceforge.net/
 License:	GPL
 Group:		Graphical desktop/Other
 BuildRoot:	%{_tmppath}/%{name}-buildroot
-BuildRequires:	gtk2-devel xpm-devel libxmu-devel
+BuildRequires:	gtk2-devel
 
 %description
 fbpanel is a lightweight, NETWM compliant desktop panel. It works with any
@@ -31,12 +31,15 @@ It provides:
 %setup -q
 
 %build
-./configure --prefix=%_prefix
-%make CFLAGS="$RPM_OPT_FLAGS"
+./configure --prefix=%{_prefix} --libdir=%{_libdir} --libexecdir=%{_libexecdir} \
+	--sysconfdir=%{_sysconfdir} --localstatedir=%{_localstatedir}
+%define _disable_ld_no_undefined 1
+%setup_compile_flags
+%make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install PREFIX=%buildroot/%_prefix
+%makeinstall_std
 
 %find_lang %name
 
@@ -48,4 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc CHANGELOG CREDITS README
 %{_bindir}/%name
 %{_datadir}/%name
-%{_mandir}/man1/*
+%dir %{_libdir}/%name
+%{_libdir}/%name/*.so
+%{_libexecdir}/%name/make_profile
+%{_libexecdir}/%name/xlogout
