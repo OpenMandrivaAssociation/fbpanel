@@ -1,5 +1,5 @@
 %define name	fbpanel
-%define version	6.0
+%define version	6.1
 %define release %mkrel 1
 
 Name: 	 	%{name}
