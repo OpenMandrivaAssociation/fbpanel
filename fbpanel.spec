@@ -1,18 +1,22 @@
-%define name	fbpanel
-%define version	6.1
-%define release %mkrel 1
+%define _disable_ld_no_undefined 1
 
-Name: 	 	%{name}
-Summary: 	Lightweight desktop panel
-Version: 	%{version}
-Release: 	%{release}
-
-Source:		http://downloads.sourceforge.net/project/fbpanel/fbpanel/%{version}/%{name}-%{version}.tbz2
-URL:		http://fbpanel.sourceforge.net/
-License:	GPL
+Summary:	A lightweight X11 desktop panel
+Name:		fbpanel
+Version:	6.1
+Release:	2
+License:	LGPLv2+ and GPLv2+
 Group:		Graphical desktop/Other
-BuildRoot:	%{_tmppath}/%{name}-buildroot
-BuildRequires:	gtk2-devel
+Url:		http://fbpanel.sourceforge.net
+Source:		http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tbz2
+Patch0:		fbpanel-6.1-dsofix.patch
+Patch1:		fbpanel-6.1-configure.patch
+# distro specific patches
+Patch10:	fbpanel-6.1-default-config.patch
+Patch11:	fbpanel-6.1-default-applications.patch
+BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(xmu)
+BuildRequires:	pkgconfig(xpm)
+Requires:	xdg-utils
 
 %description
 fbpanel is a lightweight, NETWM compliant desktop panel. It works with any
@@ -29,29 +33,39 @@ It provides:
 
 %prep
 %setup -q
+%patch0 -p1 -b .dsofix
+%patch1 -p1 -b .configure-stabs
+%patch10 -p1 -b .default-config
+%patch11 -p1 -b .default-applications
 
 %build
-./configure --prefix=%{_prefix} --libdir=%{_libdir} --libexecdir=%{_libexecdir} \
-	--sysconfdir=%{_sysconfdir} --localstatedir=%{_localstatedir}
-%define _disable_ld_no_undefined 1
-%setup_compile_flags
-%make
+%configure2_5x
+%make cflagsx="%{optflags}"
 
 %install
-rm -rf $RPM_BUILD_ROOT
 %makeinstall_std
 
-%find_lang %name
+# man page
+install -Dpm 644 data/man/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+# change some icon names that were also changed in the default panel config
+mv %{buildroot}%{_datadir}/%{name}/images/logo.png \
+	%{buildroot}%{_datadir}/%{name}/images/start-here.png
 
-%files -f %{name}.lang
-%defattr(-,root,root)
-%doc CHANGELOG CREDITS README
-%{_bindir}/%name
-%{_datadir}/%name
-%dir %{_libdir}/%name
-%{_libdir}/%name/*.so
-%{_libexecdir}/%name/make_profile
-%{_libexecdir}/%name/xlogout
+mv %{buildroot}%{_datadir}/%{name}/images/gnome-session-halt.png \
+	%{buildroot}%{_datadir}/%{name}/images/system-shutdown.png
+
+mv %{buildroot}%{_datadir}/%{name}/images/gnome-session-reboot.png \
+	%{buildroot}%{_datadir}/%{name}/images/system-reboot.png
+
+# volume plugin is not working and prevents starting of fbpanel, lets remove it.
+# https://sourceforge.net/tracker/?func=detail&aid=3121295&group_id=66031&atid=513125
+rm %{buildroot}%{_libdir}/%{name}/volume.so
+
+%files
+%doc CHANGELOG COPYING CREDITS README NOTES
+%{_bindir}/%{name}
+%{_libdir}/%{name}/
+%{_datadir}/%{name}/
+%{_mandir}/man1/%{name}.1.*
+

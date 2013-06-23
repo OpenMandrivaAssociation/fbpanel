@@ -1,0 +1,56 @@
+--- fbpanel-6.1.orig/data/config/default.in	2010-05-12 20:30:00.000000000 +0200
++++ fbpanel-6.1/data/config/default.in	2010-11-28 17:18:07.070464321 +0100
+@@ -141,8 +141,7 @@
+     type = menu
+     config {
+         IconSize = 22
+-        #icon = start-here
+-        icon = logo
++        icon = start-here
+         systemmenu {
+         }
+         separator {
+@@ -158,24 +157,24 @@
+ 	    }
+             item {
+                 name = Lock Display
+-                icon = gnome-lockscreen
+-                action = slock
++                icon = system-lock-screen
++                action = xdg-screensaver lock
+             }
+             separator {
+             }
+             item {
+                 name = Reboot
+-                icon = gnome-session-reboot
+-                action = sudo reboot
++                icon = system-reboot
++                action = reboot
+             }
+             item {
+                 name = Shutdown
+-                icon = gnome-session-halt
+-                action = sudo shutdown -h now
++                icon = system-shutdown
++                action = poweroff
+             }
+             item {
+-                name = logout
+-                icon = gnome-session-logout
++                name = Logout
++                icon = system-log-out
+                 action = %%libexecdir%%/fbpanel/xlogout
+             }
+         }
+@@ -313,10 +312,6 @@
+     }
+ }
+ 
+-plugin {
+-    type = volume
+-}
+-
+ #plugin {
+ #    type = battery
+ #}
