@@ -3,7 +3,7 @@
 Summary:	A lightweight X11 desktop panel
 Name:		fbpanel
 Version:	6.1
-Release:	2
+Release:	3
 License:	LGPLv2+ and GPLv2+
 Group:		Graphical desktop/Other
 Url:		http://fbpanel.sourceforge.net
@@ -38,6 +38,7 @@ It provides:
 %patch11 -p1 -b .default-applications
 
 %build
+%setup_compile_flags
 # this script is really ugly and doesn't work with configure macro
 ./configure \
 	--prefix=%{_prefix} \
