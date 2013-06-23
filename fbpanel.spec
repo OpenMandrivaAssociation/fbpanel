@@ -7,7 +7,7 @@ Release:	2
 License:	LGPLv2+ and GPLv2+
 Group:		Graphical desktop/Other
 Url:		http://fbpanel.sourceforge.net
-Source:		http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tbz2
+Source0:	http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tbz2
 Patch0:		fbpanel-6.1-dsofix.patch
 Patch1:		fbpanel-6.1-configure.patch
 # distro specific patches
