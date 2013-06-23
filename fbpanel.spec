@@ -9,10 +9,10 @@ Group:		Graphical desktop/Other
 Url:		http://fbpanel.sourceforge.net
 Source0:	http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tbz2
 Patch0:		fbpanel-6.1-dsofix.patch
-Patch1:		fbpanel-6.1-configure.patch
 # distro specific patches
 Patch10:	fbpanel-6.1-default-config.patch
 Patch11:	fbpanel-6.1-default-applications.patch
+BuildRequires:	pkgconfig(gdk-pixbuf-xlib-2.0)
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(xmu)
 BuildRequires:	pkgconfig(xpm)
@@ -34,12 +34,17 @@ It provides:
 %prep
 %setup -q
 %patch0 -p1 -b .dsofix
-%patch1 -p1 -b .configure-stabs
 %patch10 -p1 -b .default-config
 %patch11 -p1 -b .default-applications
 
 %build
-%configure2_5x
+# this script is really ugly and doesn't work with configure macro
+./configure \
+	--prefix=%{_prefix} \
+	--libdir=%{_libdir} \
+	--libexecdir=%{_libexecdir} \
+	--sysconfdir=%{_sysconfdir} \
+	--localstatedir=%{_localstatedir}
 %make cflagsx="%{optflags}"
 
 %install
