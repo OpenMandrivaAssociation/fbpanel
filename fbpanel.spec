@@ -3,7 +3,7 @@
 Summary:	A lightweight X11 desktop panel
 Name:		fbpanel
 Version:	6.1
-Release:	3
+Release:	4
 License:	LGPLv2+ and GPLv2+
 Group:		Graphical desktop/Other
 Url:		http://fbpanel.sourceforge.net
