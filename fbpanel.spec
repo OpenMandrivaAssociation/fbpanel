@@ -1,4 +1,5 @@
 %define _disable_ld_no_undefined 1
+%define _libexecdir /usr/libexec
 
 Summary:	A lightweight X11 desktop panel
 Name:		fbpanel
@@ -74,4 +75,7 @@ rm %{buildroot}%{_libdir}/%{name}/volume.so
 %{_libdir}/%{name}/
 %{_datadir}/%{name}/
 %{_mandir}/man1/%{name}.1.*
+%{_libexecdir}/fbpanel/
+
+
 
