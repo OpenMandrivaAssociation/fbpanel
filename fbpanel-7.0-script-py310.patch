@@ -1,0 +1,11 @@
+--- fbpanel-7.0/configure.py310	2021-07-23 12:25:31.157003483 +0900
++++ fbpanel-7.0/configure	2021-07-23 12:27:20.679026407 +0900
+@@ -73,7 +73,7 @@ class ArgParse(argparse.ArgumentParser):
+             raise BaseException("help group %s already exists" % name)
+         self.help_groups[name] = super(ArgParse,
+             self).add_argument_group(title, description)
+-        if name != 'help' and len(name.split()) == 1:
++        if name != 'help' and len(name.split()) == 1 and title is not None:
+             self.add_argument("--help-" + name, group = 'help',
+                 action = 'store_true',
+                 help = "Help on " + title)

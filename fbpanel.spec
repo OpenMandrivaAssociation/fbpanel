@@ -1,18 +1,21 @@
 %define _disable_ld_no_undefined 1
-%define _libexecdir /usr/libexec
 
 Summary:	A lightweight X11 desktop panel
 Name:		fbpanel
-Version:	6.1
-Release:	4
+Version:	7.0
+Release:	1
 License:	LGPLv2+ and GPLv2+
 Group:		Graphical desktop/Other
-Url:		http://fbpanel.sourceforge.net
-Source0:	http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tbz2
-Patch0:		fbpanel-6.1-dsofix.patch
+Url:		https://github.com/aanatoly/fbpanel
+Source0:	https://github.com/aanatoly/fbpanel/archive/%{version}/%{name}-%{version}.tar.gz
+# (fedora)
+Patch0:		fbpanel-7.0-script-py3.patch
+Patch1:		fbpanel-7.0-script-py310.patch
+Patch2:		fbpanel-7.0-clang.patch
 # distro specific patches
-Patch10:	fbpanel-6.1-default-config.patch
-Patch11:	fbpanel-6.1-default-applications.patch
+Patch10:	fbpanel-7.0-default-config.patch
+Patch11:	fbpanel-7.0-default-applications.patch
+
 BuildRequires:	pkgconfig(gdk-pixbuf-xlib-2.0)
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(xmu)
@@ -32,25 +35,35 @@ It provides:
     * ability to run many instances each with its own configuration
     * modest resource usage
 
+%files
+%license COPYING
+%doc CHANGELOG CREDITS README.md NOTES
+%{_bindir}/%{name}
+%{_libdir}/%{name}/
+%{_datadir}/%{name}/
+%{_libexecdir}/%{name}/
+%{_mandir}/man1/%{name}.1*
+
+#---------------------------------------------------------------------------
+
 %prep
-%setup -q
-%patch0 -p1 -b .dsofix
-%patch10 -p1 -b .default-config
-%patch11 -p1 -b .default-applications
+%autosetup -p1
 
 %build
-%setup_compile_flags
+%before_configure
 # this script is really ugly and doesn't work with configure macro
 ./configure \
 	--prefix=%{_prefix} \
-	--libdir=%{_libdir} \
-	--libexecdir=%{_libexecdir} \
+    --libdir=%{_libdir}/%{name} \
+    --libexecdir=%{_libexecdir}/%{name} \
 	--sysconfdir=%{_sysconfdir} \
-	--localstatedir=%{_localstatedir}
-%make cflagsx="%{optflags}"
+	--localstatedir=%{_localstatedir} \
+    --datadir=%{_datadir}/%{name} \
+    --mandir=%{_mandir}/man1
+%make_build cflagsx="%{optflags}"
 
 %install
-%makeinstall_std
+%make_install
 
 # man page
 install -Dpm 644 data/man/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
@@ -67,15 +80,5 @@ mv %{buildroot}%{_datadir}/%{name}/images/gnome-session-reboot.png \
 
 # volume plugin is not working and prevents starting of fbpanel, lets remove it.
 # https://sourceforge.net/tracker/?func=detail&aid=3121295&group_id=66031&atid=513125
-rm %{buildroot}%{_libdir}/%{name}/volume.so
-
-%files
-%doc CHANGELOG COPYING CREDITS README NOTES
-%{_bindir}/%{name}
-%{_libdir}/%{name}/
-%{_datadir}/%{name}/
-%{_mandir}/man1/%{name}.1.*
-%{_libexecdir}/fbpanel/
-
-
+rm %{buildroot}%{_libdir}/%{name}/libvolume.so
 

@@ -1,5 +1,5 @@
---- fbpanel-6.1.orig/data/config/default.in	2010-05-12 20:30:00.000000000 +0200
-+++ fbpanel-6.1/data/config/default.in	2010-11-28 17:18:07.070464321 +0100
+--- a/data/config/default.in
++++ b/data/config/default.in
 @@ -141,8 +141,7 @@
      type = menu
      config {
@@ -40,7 +40,7 @@
 -                icon = gnome-session-logout
 +                name = Logout
 +                icon = system-log-out
-                 action = %%libexecdir%%/fbpanel/xlogout
+                 action = @libexecdir@/xlogout
              }
          }
 @@ -313,10 +312,6 @@
@@ -54,3 +54,4 @@
  #plugin {
  #    type = battery
  #}
+
